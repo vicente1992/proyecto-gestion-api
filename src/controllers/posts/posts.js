@@ -1,8 +1,6 @@
 const postModel = require('../../models/posts');
 const { handleHttpError } = require('../../utils');
 
-
-
 /**
  * Get all items
  * @param {*} req
@@ -10,7 +8,6 @@ const { handleHttpError } = require('../../utils');
  */
 const getItems = async (req = request, res) => {
   try {
-
 
     const data = await postModel.aggregate([
       {
@@ -65,6 +62,7 @@ const getItems = async (req = request, res) => {
         $group: {
           _id: "$_id",
           content: { $first: "$content" },
+          images: { $first: "$images" },
           createdAt: { $first: "$createdAt" },
           username: { $first: "$user.name" },
           avatar: { $first: "$user.avatar" },
@@ -76,6 +74,7 @@ const getItems = async (req = request, res) => {
         $project: {
           _id: 1,
           content: 1,
+          images: 1,
           createdAt: 1,
           numberOfComments: 1,
           numberOfCLikes: 1,
@@ -93,6 +92,22 @@ const getItems = async (req = request, res) => {
   }
 };
 
+
+const getUrlPath = (filename = '') => {
+  return `${process.env.APP_URL}/storage/${filename}`
+}
+
+const getImages = (files = []) => {
+
+  const images = [];
+  files.forEach(({ filename }) => {
+    const urlPtah = getUrlPath(filename);
+    images.push(urlPtah);
+  })
+
+  return images;
+}
+
 /**
  * Insertar un registro
  * @param {*} req
@@ -100,15 +115,14 @@ const getItems = async (req = request, res) => {
  */
 const createItem = async (req, res) => {
   try {
+    const { files = [], } = req;
     const userId = req.user.id;
-    console.log(userId);
-    const body = req.body;
-    body.userId = userId;
-    const data = await postModel.create({ ...body })
+    const { content = [] } = req.body
+    const images = getImages(files);
+    const data = await postModel.create({ content: content.pop(), userId, images })
     res.status(201);
     res.send({ data });
   } catch (e) {
-    console.log(e);
     handleHttpError(res, "ERROR_CREATE_ITEMS");
   }
 };

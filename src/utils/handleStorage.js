@@ -1,9 +1,9 @@
 const multer = require('multer')
 const MEDIA_PATH = '/public/storage/'
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const pathStorage = `${process.cwd()}${MEDIA_PATH}`
-    // const pathStorage = `${__dirname}/../storage`
     cb(null, pathStorage)
   },
   filename: function (req, file, cb) {

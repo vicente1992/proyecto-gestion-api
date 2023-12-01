@@ -3,10 +3,11 @@ const express = require("express");
 const router = express.Router();
 const { authMiddleware } = require('../middleware');
 const { createItem, getItems } = require('../controllers/posts/posts');
+const { uploadMiddleware } = require("../utils/handleStorage");
 
 // router.get('/', authMiddleware, paginationMiddleware, getItems);
 
-router.post("/", authMiddleware, createItem);
+router.post("/", authMiddleware, uploadMiddleware.array('images'), createItem);
 
 router.get("/", getItems);
 
