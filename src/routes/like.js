@@ -6,7 +6,7 @@ const { createItem } = require('../controllers/likes/like');
 
 // router.get('/', authMiddleware, paginationMiddleware, getItems);
 
-router.post("/", authMiddleware, createItem);
+router.post("/", createItem);
 
 // router.get("/:id", machineMiddlewareHash, validatorGetItem, getItem);
 
