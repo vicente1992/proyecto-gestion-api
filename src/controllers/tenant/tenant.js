@@ -5,7 +5,6 @@ const tenantModel = require('../../models/tenant');
 const { Roles, EXTENSIONS, handleHttpError } = require('../../utils');
 const { getSheetToJson, parseMenu, mapQuery } = require('./helpers');
 const { request } = require('express');
-// const MEDIA_PATH = `${__dirname}/../../storage`;
 const MEDIA_PATH = '/public/storage/'
 // process.cwd()
 
