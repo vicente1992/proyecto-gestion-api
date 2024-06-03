@@ -1,49 +1,18 @@
 const { matchedData } = require("express-validator");
 const grantModel = require('../../models/grant');
 const { handleHttpError } = require('../../utils');
+const { getAll, getOne } = require("./db");
 
 const getItems = async (req, res) => {
   try {
-    const data = await grantModel.aggregate([
-      {
-        $lookup: {
-          from: "leveleducations",
-          localField: "levelEducationId",
-          foreignField: "_id",
-          as: "level"
-        }
-      },
-      { $unwind: '$level' },
-
-      {
-        $group: {
-          _id: "$_id",
-          title: { $first: "$title" },
-          logo: { $first: "$logo" },
-          requirements: { $first: "$requirements" },
-          initialDate: { $first: "$initialDate" },
-          dateEnd: { $first: "$dateEnd" },
-          createdAt: { $first: "$createdAt" },
-          levelEducation: { $first: "$level.name" },
-          levelEducationId: { $first: "$level._id" },
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          requirements: 1,
-          logo: 1,
-          createdAt: 1,
-          initialDate: 1,
-          dateEnd: 1,
-          levelEducation: 1,
-          levelEducationId: 1
-        }
-      },
-      { $sort: { createdAt: -1 } }
-    ])
-    res.send(data);
+    const { limit, skip } = req.pagination;
+    const params = {
+      limit,
+      skip
+    }  
+    const data = await getAll(params);
+    const count = await grantModel.countDocuments();
+    res.send({ data, count });
   } catch (e) {
     console.log(e);
     handleHttpError(res, "ERROR_GET_ITEMS");
@@ -59,8 +28,7 @@ const getItem = async (req, res) => {
   try {
     req = matchedData(req);
     const { id } = req;
-    const query = grantModel.where({ _id: id })
-    const data = await query.findOne()
+    const data = (await getOne(id)).pop(); 
     res.send(data);
   } catch (e) {
     console.log(e)
