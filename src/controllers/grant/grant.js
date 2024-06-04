@@ -2,14 +2,19 @@ const { matchedData } = require("express-validator");
 const grantModel = require('../../models/grant');
 const { handleHttpError } = require('../../utils');
 const { getAll, getOne } = require("./db");
+const { request } = require("express");
 
-const getItems = async (req, res) => {
-  try {
+const getItems = async (req = request, res) => {
+  try { 
+    const { title, levelEducation, status } = req.query;
     const { limit, skip } = req.pagination;
     const params = {
       limit,
-      skip
-    }  
+      skip,
+      title,
+      levelEducation,
+      status
+    }   
     const data = await getAll(params);
     const count = await grantModel.countDocuments();
     res.send({ data, count });

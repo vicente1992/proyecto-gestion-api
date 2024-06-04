@@ -1,12 +1,3 @@
-/**
- * title
-levelEducation
-dateEnd
-initialDate
-logo
-requirements
- */
-
 const { check } = require("express-validator");
 const validateResults = require("../utils/handleValidation");
 
@@ -17,6 +8,7 @@ const validatorCreateItem = [
   check("initialDate").exists().notEmpty(),
   check("logo").exists().notEmpty(),
   check("requirements").exists().notEmpty(),
+  check("isActive").optional(),
   (req, res, next) => {
     return validateResults(req, res, next);
   },
@@ -44,6 +36,7 @@ const validatorUpdateItem = [
   check("initialDate").exists().notEmpty(),
   check("logo").exists().notEmpty(),
   check("requirements").exists().notEmpty(),
+  check("isActive").optional(),
   (req, res, next) => {
     return validateResults(req, res, next);
   },

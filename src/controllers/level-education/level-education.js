@@ -12,8 +12,7 @@ const getItems = async (req = request, res) => {
   try {
     const data = await levelEducationModel.find({});
     res.send(data);
-  } catch (e) {
-    console.log(e)
+  } catch (e) { 
     handleHttpError(res, "ERROR_GET_ITEMS")
   }
 };
@@ -29,8 +28,7 @@ const createItem = async (req, res) => {
     const data = await levelEducationModel.create({ ...body })
     res.status(201);
     res.send(data);
-  } catch (e) {
-    console.log(e);
+  } catch (e) { 
     handleHttpError(res, "ERROR_CREATE_ITEMS");
   }
 };
@@ -41,8 +39,7 @@ const updateItem = async (req, res) => {
     const data = await levelEducationModel.findByIdAndUpdate(id, body);
     res.status(201);
     res.send({ data });
-  } catch (e) {
-    console.log(e);
+  } catch (e) { 
     handleHttpError(res, "ERROR_CREATE_ITEMS");
   }
 };
@@ -59,8 +56,7 @@ const deleteItem = async (req, res) => {
 
     const data = await levelEducationModel.delete({ _id: id })
     res.json({ data })
-  } catch (error) {
-    console.log(error);
+  } catch (error) { 
     handleHttpError(res, 'ERROR_DELETE_ITEM', error)
   }
 }

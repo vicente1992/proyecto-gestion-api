@@ -27,6 +27,10 @@ const grantSchema = new mongoose.Schema({
     ref: 'LevelEducation',
     required: true
   },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
 
 },
   {
