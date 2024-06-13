@@ -102,8 +102,8 @@ const generateReport = async (req = request, res) => {
       { wch: 30 },
       { wch: 30 },
       { wch: 30 },
-      { wch: 30 },
-      { wch: 15 },
+      { wch: 50 },
+      { wch: 25 },
     ];
 
     worksheet['!cols'] = wscols;
